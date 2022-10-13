@@ -10,8 +10,7 @@
   oNode.dataType = "bin.base64"
   oNode.text = payload
 
-  Dim BinaryStream
-  Set BinaryStream = CreateObject("ADODB.Stream")
+  Dim BinaryStream: Set BinaryStream = CreateObject("ADODB.Stream")
   BinaryStream.Type = 1
   BinaryStream.Open
   BinaryStream.Write oNode.nodeTypedValue
